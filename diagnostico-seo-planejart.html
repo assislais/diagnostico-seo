@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico SEO — Planejart Soluções</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rust: #c0392b;
+    --spark: #f39c12;
+    --green: #27ae60;
+    --blue: #2980b9;
+    --dark: #1a1f2e;
+    --body: #2c3e50;
+    --light: #f4f6f8;
+    --border: #dde3ea;
+    --white: #ffffff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Barlow', sans-serif; font-weight: 400; color: var(--body); background: var(--light); line-height: 1.7; font-size: 15px; }
+
+  .cover {
+    background: linear-gradient(135deg, #0d1117 0%, #1a1f2e 60%, #0a0e19 100%);
+    color: #fff;
+    padding: 60px 60px 50px;
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: 0; right: -60px;
+    width: 600px; height: 100%;
+    background: repeating-linear-gradient(-55deg, transparent, transparent 14px, rgba(192,57,43,0.05) 14px, rgba(192,57,43,0.05) 28px);
+    pointer-events: none;
+  }
+  .cover-tag {
+    display: inline-block;
+    background: var(--rust);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    margin-bottom: 24px;
+  }
+  .cover h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 56px;
+    line-height: 0.95;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+  }
+  .cover h1 span { color: var(--spark); }
+  .cover-sub { font-size: 16px; color: #8892a0; max-width: 520px; line-height: 1.7; margin-bottom: 48px; }
+  .cover-meta { display: flex; gap: 40px; flex-wrap: wrap; }
+  .cover-meta-item .label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #8892a0; margin-bottom: 4px; font-family: 'Barlow Condensed', sans-serif; font-weight: 600; }
+  .cover-meta-item .value { font-size: 16px; color: #fff; font-weight: 500; }
+
+  .page { max-width: 900px; margin: 0 auto; padding: 48px 40px; }
+
+  .section-title {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 28px; padding-bottom: 14px;
+    border-bottom: 2px solid var(--border);
+  }
+  .section-num {
+    background: var(--rust); color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 13px; letter-spacing: 1px;
+    padding: 4px 10px; border-radius: 2px;
+  }
+  .section-title h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 22px; color: var(--dark); letter-spacing: 0.3px;
+  }
+
+  .card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 4px; padding: 24px 28px; margin-bottom: 16px;
+  }
+  .card-title {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-size: 16px; color: var(--dark); margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card p { color: #4a5568; font-size: 14px; line-height: 1.7; }
+
+  .badge {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+    font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 2px; margin-left: 8px;
+  }
+  .badge-red { background: #fdecea; color: var(--rust); border: 1px solid #f5c6c2; }
+  .badge-yellow { background: #fef9e7; color: #b7770d; border: 1px solid #f9e4a0; }
+  .badge-green { background: #eafaf1; color: #1e8449; border: 1px solid #a9dfbf; }
+
+  .priority-table { width: 100%; border-collapse: collapse; background: var(--white); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 16px; }
+  .priority-table th { background: var(--dark); color: #fff; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; padding: 12px 16px; text-align: left; }
+  .priority-table td { padding: 12px 16px; font-size: 14px; border-bottom: 1px solid var(--border); color: #4a5568; }
+  .priority-table tr:last-child td { border-bottom: none; }
+  .priority-table tr:nth-child(even) td { background: #fafbfc; }
+  .priority { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; border-radius: 2px; white-space: nowrap; }
+  .p-alta { background: #fdecea; color: var(--rust); }
+  .p-media { background: #fef9e7; color: #b7770d; }
+  .p-baixa { background: #eafaf1; color: #1e8449; }
+
+  .kw-table { width: 100%; border-collapse: collapse; background: var(--white); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 16px; font-size: 14px; }
+  .kw-table th { background: #2c3e50; color: #fff; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; padding: 12px 16px; text-align: left; }
+  .kw-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); color: #4a5568; }
+  .kw-table tr:last-child td { border-bottom: none; }
+  .kw-table tr:nth-child(even) td { background: #fafbfc; }
+  .kw-main { font-weight: 500; color: var(--dark); }
+
+  .insight { background: #eef6ff; border-left: 4px solid var(--blue); padding: 16px 20px; border-radius: 0 4px 4px 0; margin-bottom: 16px; font-size: 14px; color: #2c3e50; line-height: 1.7; }
+  .insight strong { color: var(--blue); }
+  .alert { background: #fef9e7; border-left: 4px solid var(--spark); padding: 16px 20px; border-radius: 0 4px 4px 0; margin-bottom: 16px; font-size: 14px; color: #2c3e50; line-height: 1.7; }
+  .alert strong { color: #b7770d; }
+  .win { background: #eafaf1; border-left: 4px solid var(--green); padding: 16px 20px; border-radius: 0 4px 4px 0; margin-bottom: 16px; font-size: 14px; color: #2c3e50; line-height: 1.7; }
+  .win strong { color: #1e8449; }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .sublabel { display: block; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: #8892a0; margin-bottom: 12px; margin-top: 28px; }
+
+  .roadmap { display: flex; flex-direction: column; gap: 0; }
+  .roadmap-item { display: flex; gap: 20px; position: relative; }
+  .roadmap-item:not(:last-child)::before {
+    content: ''; position: absolute; left: 19px; top: 44px; bottom: 0;
+    width: 2px; background: var(--border);
+  }
+  .roadmap-dot {
+    width: 40px; height: 40px; border-radius: 50%; background: var(--dark); color: #fff;
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 2px; position: relative; z-index: 1;
+  }
+  .roadmap-dot.red { background: var(--rust); }
+  .roadmap-dot.yellow { background: var(--spark); }
+  .roadmap-dot.green { background: var(--green); }
+  .roadmap-content { padding-bottom: 28px; }
+  .roadmap-month { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: #8892a0; margin-bottom: 4px; }
+  .roadmap-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 18px; color: var(--dark); margin-bottom: 8px; }
+  .roadmap-items { font-size: 14px; color: #4a5568; line-height: 1.8; }
+
+  @media print {
+    .cover { page-break-after: always; }
+    .page { padding: 32px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ======== CAPA DIAGNÓSTICO ======== -->
+<div class="cover">
+  <div class="cover-tag">🔧 Diagnóstico SEO</div>
+  <h1>DIAGNÓSTICO<br><span>PLANEJART</span></h1>
+  <p class="cover-sub">Análise completa de posicionamento orgânico, palavras-chave estratégicas e plano de ação para a Planejart aparecer no Google e atrair mais contatos na região metropolitana de BH.</p>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <div class="label">Empresa</div>
+      <div class="value">Planejart Soluções</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="label">Localização</div>
+      <div class="value">Betim, MG</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="label">Mercado</div>
+      <div class="value">Estruturas Metálicas — B2B</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="label">Data</div>
+      <div class="value">Março 2026</div>
+    </div>
+  </div>
+</div>
+
+<!-- ======== SEÇÃO 01 — SITUAÇÃO ATUAL ======== -->
+<div class="page">
+  <div class="section-title">
+    <span class="section-num">01</span>
+    <h2>Situação Atual — O que está impedindo o Google de encontrar a Planejart</h2>
+  </div>
+
+  <div class="alert">
+    <strong>⚠ Diagnóstico crítico:</strong> A Planejart pesquisa "fabricação e montagem de estruturas metálicas" e o site <strong>não aparece em nenhuma página</strong> do Google. Isso não é problema de sorte — é problema de técnica. Os pontos abaixo explicam o porquê.
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔴 Título da página genérico e sem palavra-chave <span class="badge badge-red">Crítico</span></div>
+    <p>O título atual do site é apenas <em>"Planejart Soluções em estruturas metalicas"</em>. O Google usa o título (tag <code>&lt;title&gt;</code>) como um dos sinais mais fortes de relevância. Esse título não menciona cidade, não usa acentuação correta e não inclui os termos que os contatos realmente pesquisam — como "montagem de estrutura metálica Betim" ou "mezanino metálico BH".</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔴 Sem Google Meu Negócio configurado <span class="badge badge-red">Crítico</span></div>
+    <p>A Planejart não tem certeza se existe um perfil no Google Maps. Para empresas locais B2B, o Google Meu Negócio é responsável por boa parte das aparições no Google — especialmente quando alguém pesquisa "estrutura metálica Betim" ou "serralheria Contagem". Sem esse perfil, a empresa literalmente não existe para o Google Maps.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🟡 Apenas uma página — sem estrutura de conteúdo <span class="badge badge-yellow">Alta</span></div>
+    <p>O site atual é uma única página com descrições curtas de serviços. O Google precisa de páginas dedicadas para cada serviço e cidade atendida para poder rankeá-las individualmente. Sem isso, o site compete em desvantagem contra concorrentes que têm 10, 20 ou 30 páginas indexadas.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🟡 Textos não contêm as palavras-chave certas <span class="badge badge-yellow">Alta</span></div>
+    <p>A Planejart menciona "mezanino, steeldeck, guarda corpo, fabricação de treliças" como termos buscados — mas esses termos não aparecem de forma otimizada no site. O Google só ranqueia o que ele consegue ler e entender como relevante. Se "steeldeck Betim" não está no texto, título e descrição de uma página, ela jamais aparecerá para quem pesquisa isso.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🟢 Ponto positivo: nicho com boa oportunidade <span class="badge badge-green">Oportunidade</span></div>
+    <p>A concorrência digital local para termos como "montagem de estrutura metálica Betim", "mezanino metálico Contagem" e "steeldeck BH" é <strong>relativamente baixa</strong>. A maioria dos concorrentes locais identificados tem sites simples ou sem SEO trabalhado. Com ações corretas, a Planejart pode aparecer nas primeiras posições em 3 a 6 meses.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SEÇÃO 02 — CONCORRÊNCIA -->
+  <div class="section-title">
+    <span class="section-num">02</span>
+    <h2>Concorrência Digital — Quem já aparece e por quê</h2>
+  </div>
+
+  <div class="insight">
+    <strong>📌 O que foi encontrado:</strong> Pesquisando os termos mencionados pela Planejart e analisando o mercado de Betim e região metropolitana de BH, os principais concorrentes digitais são empresas que criaram <strong>páginas dedicadas por serviço e por cidade</strong> — exatamente o que a Planejart ainda não faz.
+  </div>
+
+  <table class="priority-table">
+    <thead>
+      <tr>
+        <th>Concorrente</th>
+        <th>Estratégia que os faz aparecer</th>
+        <th>Relevância</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>REX Estruturas Metálicas (BH)</strong></td>
+        <td>Página específica "mezanino metálico Betim", "mezanino metálico BH", "montagem de mezanino" — cada cidade, uma URL</td>
+        <td><span class="priority p-alta">Alta</span></td>
+      </tr>
+      <tr>
+        <td><strong>BHW Soluções em Serralheria</strong></td>
+        <td>Cita explicitamente Betim, Contagem e BH em texto e título; Google Maps ativo com avaliações</td>
+        <td><span class="priority p-alta">Alta</span></td>
+      </tr>
+      <tr>
+        <td><strong>Structuraço Estruturas BH</strong></td>
+        <td>Blog com artigos técnicos (mezanino, steeldeck, coberturas), site com 8+ páginas indexadas</td>
+        <td><span class="priority p-media">Média</span></td>
+      </tr>
+      <tr>
+        <td><strong>Betim Serralheria (local)</strong></td>
+        <td>Domínio com "betim" no nome — vantagem de SEO local imediata</td>
+        <td><span class="priority p-media">Média</span></td>
+      </tr>
+      <tr>
+        <td><strong>Ágape, Mérito, TCR</strong></td>
+        <td>Presença fraca no Google — oportunidade para a Planejart ultrapassar</td>
+        <td><span class="priority p-baixa">Baixa</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="win">
+    <strong>✅ Brecha identificada:</strong> Nenhum concorrente local forte está ranqueando especificamente para <strong>"steeldeck Betim"</strong>, <strong>"guarda corpo industrial Betim"</strong> ou <strong>"reforma de concha de trator MG"</strong> — serviços que a Planejart oferece e que têm busca real. São palavras-chave de baixa concorrência com alta intenção de compra.
+  </div>
+</div>
+
+<!-- ======== SEÇÃO 03 — PALAVRAS-CHAVE ======== -->
+<div class="page">
+  <div class="section-title">
+    <span class="section-num">03</span>
+    <h2>Palavras-Chave Estratégicas — O que a Planejart deve ranquear</h2>
+  </div>
+
+  <p style="margin-bottom: 20px; color: #4a5568; font-size: 14px;">As palavras-chave foram selecionadas com base nos serviços que geram mais faturamento, no público-alvo (B2B, construtoras, indústrias, agro) e na análise de concorrência da região metropolitana de BH.</p>
+
+  <span class="sublabel" style="margin-top:0;">🎯 Prioridade 1 — Serviço principal + cidade (converter em contatos)</span>
+  <table class="kw-table">
+    <thead>
+      <tr><th>Palavra-chave</th><th>Intenção</th><th>Dificuldade</th><th>Onde usar</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="kw-main">montagem de estrutura metálica Betim</td><td>Compra direta</td><td>🟢 Baixa</td><td>Página inicial + Google Meu Negócio</td></tr>
+      <tr><td class="kw-main">montagem de estrutura metálica BH</td><td>Compra direta</td><td>🟡 Média</td><td>Página de serviço dedicada</td></tr>
+      <tr><td class="kw-main">empresa de estrutura metálica Betim MG</td><td>Compra direta</td><td>🟢 Baixa</td><td>Página inicial + título da página</td></tr>
+      <tr><td class="kw-main">fabricação e montagem de galpão metálico BH</td><td>Compra direta</td><td>🟡 Média</td><td>Página de serviço: Galpões</td></tr>
+      <tr><td class="kw-main">estrutura metálica Contagem</td><td>Compra direta</td><td>🟢 Baixa</td><td>Página dedicada cidade</td></tr>
+    </tbody>
+  </table>
+
+  <span class="sublabel">🎯 Prioridade 2 — Serviços específicos (baixa concorrência, alta intenção)</span>
+  <table class="kw-table">
+    <thead>
+      <tr><th>Palavra-chave</th><th>Intenção</th><th>Dificuldade</th><th>Onde usar</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="kw-main">mezanino metálico Betim</td><td>Compra direta</td><td>🟢 Baixa</td><td>Página de serviço: Mezaninos</td></tr>
+      <tr><td class="kw-main">mezanino steel deck BH</td><td>Compra direta</td><td>🟢 Baixa</td><td>Página de serviço: Mezaninos</td></tr>
+      <tr><td class="kw-main">cobertura metálica industrial Betim</td><td>Compra direta</td><td>🟢 Baixa</td><td>Página de serviço: Coberturas</td></tr>
+      <tr><td class="kw-main">guarda corpo metálico industrial BH</td><td>Compra direta</td><td>🟢 Baixa</td><td>Página de serviço + portfólio</td></tr>
+      <tr><td class="kw-main">fabricação de treliça metálica MG</td><td>Compra direta</td><td>🟢 Baixa</td><td>Página de serviço dedicada</td></tr>
+      <tr><td class="kw-main">steeldeck Betim Contagem</td><td>Compra direta</td><td>🟢 Muito baixa</td><td>Página dedicada — oportunidade única</td></tr>
+    </tbody>
+  </table>
+
+  <span class="sublabel">🎯 Prioridade 3 — Nicho exclusivo (serviço diferencial)</span>
+  <table class="kw-table">
+    <thead>
+      <tr><th>Palavra-chave</th><th>Intenção</th><th>Dificuldade</th><th>Onde usar</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="kw-main">reforma de concha de escavadeira MG</td><td>Compra técnica</td><td>🟢 Muito baixa</td><td>Página de serviço específica</td></tr>
+      <tr><td class="kw-main">reforma de caçamba trator metálica</td><td>Compra técnica</td><td>🟢 Muito baixa</td><td>Página + artigo técnico</td></tr>
+      <tr><td class="kw-main">estrutura metálica para indústria alimentícia BH</td><td>Compra especializada</td><td>🟢 Baixa</td><td>Página de segmento: Alimentício</td></tr>
+    </tbody>
+  </table>
+
+  <div class="insight">
+    <strong>💡 Por que esses termos foram escolhidos:</strong> Todos têm intenção de compra clara — quem pesquisa quer contratar, não só pesquisar. Os termos com cidade têm menos concorrência e convertem melhor. Quem pesquisa "mezanino metálico Betim" está muito mais próximo de fechar negócio do que quem pesquisa só "mezanino metálico".
+  </div>
+</div>
+
+<!-- ======== SEÇÃO 04 — PLANO DE AÇÃO ======== -->
+<div class="page">
+  <div class="section-title">
+    <span class="section-num">04</span>
+    <h2>Plano de Ação — O que fazer e em que ordem</h2>
+  </div>
+
+  <div class="roadmap">
+    <div class="roadmap-item">
+      <div class="roadmap-dot red">1</div>
+      <div class="roadmap-content">
+        <div class="roadmap-month">Semana 1–2 — Fundação</div>
+        <div class="roadmap-title">Google Meu Negócio + Correções Técnicas</div>
+        <div class="roadmap-items">
+          ▸ Criar e verificar o perfil no Google Meu Negócio (Google Maps)<br>
+          ▸ Preencher: categoria principal = "Empresa de estruturas metálicas", endereço completo, horário, telefone com DDD<br>
+          ▸ Adicionar fotos reais de obras executadas (mínimo 10 fotos)<br>
+          ▸ Corrigir o título da página: <em>"Montagem de Estrutura Metálica em Betim e BH | Planejart Soluções"</em><br>
+          ▸ Redesign e reestruturação do site para suportar múltiplas páginas por serviço
+        </div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="roadmap-dot red">2</div>
+      <div class="roadmap-content">
+        <div class="roadmap-month">Semana 3–6 — Estrutura do Site</div>
+        <div class="roadmap-title">Criar Páginas por Serviço</div>
+        <div class="roadmap-items">
+          ▸ Página: <strong>Montagem de Estruturas Metálicas</strong> — serviço principal, foco em Betim e RMBH<br>
+          ▸ Página: <strong>Mezanino Metálico e Steel Deck</strong> — fotos de obras, especificações técnicas<br>
+          ▸ Página: <strong>Galpões Metálicos</strong> — para indústria, comércio e logística<br>
+          ▸ Página: <strong>Coberturas Metálicas</strong> — treliças, tesouras, telhas termoacústicas<br>
+          ▸ Página: <strong>Guarda-corpo e Serralheria Industrial</strong><br>
+          ▸ Cada página terá: título com palavra-chave + cidade, texto de 400–600 palavras, fotos reais, botão de orçamento
+        </div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="roadmap-dot yellow">3</div>
+      <div class="roadmap-content">
+        <div class="roadmap-month">Mês 2–3 — Autoridade e Confiança</div>
+        <div class="roadmap-title">Portfólio + Artigos + Avaliações</div>
+        <div class="roadmap-items">
+          ▸ Criar seção de portfólio com fotos organizadas por tipo de obra<br>
+          ▸ Solicitar avaliações no Google às empresas parceiras mais satisfeitas<br>
+          ▸ Adicionar pelo menos 3 depoimentos no site com nome, empresa e tipo de serviço<br>
+          ▸ Publicar 1 artigo técnico por semana: <em>"O que é steel deck"</em>, <em>"Quanto custa um mezanino metálico"</em>, <em>"Vantagens do galpão metálico sobre o de alvenaria"</em><br>
+          ▸ Cadastrar a Planejart nos diretórios: ABM, Guia Industrial
+        </div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="roadmap-dot yellow">4</div>
+      <div class="roadmap-content">
+        <div class="roadmap-month">Mês 3–4 — Expansão Local</div>
+        <div class="roadmap-title">SEO Local por Cidade</div>
+        <div class="roadmap-items">
+          ▸ Criar página dedicada para <strong>Betim</strong>: "Estrutura Metálica em Betim MG — Planejart"<br>
+          ▸ Criar página dedicada para <strong>Contagem</strong>: "Estrutura Metálica em Contagem MG"<br>
+          ▸ Criar página dedicada para <strong>BH e região metropolitana</strong><br>
+          ▸ Atualizar Google Meu Negócio com novos projetos mensalmente<br>
+          ▸ Responder todas as avaliações recebidas no Google
+        </div>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="roadmap-dot green">5</div>
+      <div class="roadmap-content">
+        <div class="roadmap-month">Mês 5–6 — Consolidação</div>
+        <div class="roadmap-title">Monitoramento e Refinamento</div>
+        <div class="roadmap-items">
+          ▸ Google Search Console: monitorar quais palavras estão gerando cliques<br>
+          ▸ Google Analytics: entender de onde vêm os visitantes e quais páginas convertem<br>
+          ▸ Identificar termos nas posições 5–15 e reforçar o conteúdo dessas páginas<br>
+          ▸ Criar página de nicho: <strong>"Reforma de concha de escavadeira/trator — MG"</strong><br>
+          ▸ Avaliar ativação de tráfego pago para acelerar resultados nos termos mais competitivos
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======== CAPA PROPOSTA ======== -->
+<div class="cover" style="margin-top: 0; page-break-before: always;">
+  <div class="cover-tag">📄 Proposta Comercial</div>
+  <h1>PROPOSTA DE<br><span>SERVIÇOS SEO</span></h1>
+  <p class="cover-sub">Com base no diagnóstico realizado, apresentamos a proposta de serviços de otimização para buscas orgânicas (SEO) e presença digital para a Planejart Soluções.</p>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <div class="label">Investimento</div>
+      <div class="value">R$ 500 / mês</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="label">Vigência mínima</div>
+      <div class="value">6 meses</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="label">Início estimado</div>
+      <div class="value">Abril 2026</div>
+    </div>
+  </div>
+</div>
+
+<!-- ======== PROPOSTA 01 — ESCOPO ======== -->
+<div class="page">
+  <div class="section-title">
+    <span class="section-num">01</span>
+    <h2>Escopo de Serviços — O que está incluso</h2>
+  </div>
+
+  <div class="insight">
+    <strong>📌 Como funciona:</strong> O trabalho é dividido em duas fases. A <strong>Fase 1 (meses 1–2)</strong> é mais intensa — quando a base é construída, o site é redesenhado e as páginas são criadas. A <strong>Fase 2 (meses 3–6)</strong> é de crescimento contínuo com publicação semanal e monitoramento. O mesmo valor mensal cobre as duas fases.
+  </div>
+
+  <span class="sublabel" style="margin-top:0;">🔴 Fase 1 — Meses 1 e 2: Estruturação e Redesign</span>
+  <table class="priority-table">
+    <thead>
+      <tr><th>Entrega</th><th>Descrição</th><th>Prazo</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Redesign do site</strong></td>
+        <td>Reestruturação completa do site para suportar múltiplas páginas por serviço, melhorar a experiência do visitante e facilitar o ranqueamento no Google</td>
+        <td>Mês 1</td>
+      </tr>
+      <tr>
+        <td><strong>Otimização técnica</strong></td>
+        <td>Reescrita das tags &lt;title&gt; e &lt;meta description&gt;, estrutura de URLs amigáveis, velocidade de carregamento e adaptação para mobile</td>
+        <td>Semana 1–2</td>
+      </tr>
+      <tr>
+        <td><strong>Google Meu Negócio</strong></td>
+        <td>Criação, verificação e preenchimento completo do perfil no Google Maps — categoria, descrição otimizada, horário, fotos e link do site</td>
+        <td>Semana 1</td>
+      </tr>
+      <tr>
+        <td><strong>Criação de páginas por serviço</strong></td>
+        <td>Redação e publicação de até 5 páginas dedicadas: Montagem de Estruturas, Mezaninos, Galpões, Coberturas, Guarda-corpo — cada uma otimizada para uma palavra-chave com cidade</td>
+        <td>Mês 1–2</td>
+      </tr>
+      <tr>
+        <td><strong>Rastreador de contatos via WhatsApp</strong></td>
+        <td>Link exclusivo de WhatsApp com UTM para rastrear todos os contatos originados pelo site — relatório mensal de cliques enviado à Planejart</td>
+        <td>Semana 2</td>
+      </tr>
+      <tr>
+        <td><strong>Google Search Console</strong></td>
+        <td>Configuração da ferramenta gratuita do Google para monitorar indexação, palavras-chave e erros do site</td>
+        <td>Semana 2</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <span class="sublabel">🟡 Fase 2 — Meses 3 a 6: Crescimento e Publicação Contínua</span>
+  <table class="priority-table">
+    <thead>
+      <tr><th>Entrega</th><th>Descrição</th><th>Frequência</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1 página ou artigo por semana</strong></td>
+        <td>Publicação semanal de conteúdo otimizado: páginas de cidade, artigos técnicos ou páginas de segmento — ex: "estrutura metálica para indústria alimentícia Betim", "o que é steeldeck", "quanto custa um mezanino metálico"</td>
+        <td>1x por semana</td>
+      </tr>
+      <tr>
+        <td><strong>Relatório mensal de desempenho</strong></td>
+        <td>Relatório com: posições no Google, cliques no WhatsApp rastreado, páginas mais visitadas e evolução mês a mês</td>
+        <td>1x por mês</td>
+      </tr>
+      <tr>
+        <td><strong>Atualização do Google Meu Negócio</strong></td>
+        <td>Publicação de 2 posts mensais com fotos de obras recentes para manter o perfil ativo e relevante</td>
+        <td>2x por mês</td>
+      </tr>
+      <tr>
+        <td><strong>Ajustes e melhorias contínuas</strong></td>
+        <td>Correções técnicas, atualização de textos, melhoria de páginas que estão quase ranqueando (posições 5–15)</td>
+        <td>Conforme necessário</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr class="divider">
+
+  <!-- ======== PROPOSTA 02 — TRÁFEGO PAGO ======== -->
+  <div class="section-title">
+    <span class="section-num">02</span>
+    <h2>Recomendação: Tráfego Pago como Acelerador</h2>
+  </div>
+
+  <div class="alert">
+    <strong>📢 Por que considerar agora?</strong> O SEO orgânico leva de 3 a 6 meses para gerar resultados consistentes. O Google Ads e o Meta Ads podem gerar contatos imediatos — enquanto o orgânico cresce, o tráfego pago mantém a Planejart visível para quem está pesquisando agora.
+  </div>
+
+  <div class="two-col">
+    <div class="card" style="border-top: 3px solid #1a73e8;">
+      <div class="card-title">🔵 Google Ads</div>
+      <p>Anúncios que aparecem no topo do Google quando alguém pesquisa "estrutura metálica Betim" ou "mezanino metálico BH". Ideal para capturar quem já tem intenção de contratar. Resultado imediato, com investimento direto em mídia.</p>
+    </div>
+    <div class="card" style="border-top: 3px solid #1877f2;">
+      <div class="card-title">🔷 Meta Ads (Instagram / Facebook)</div>
+      <p>Anúncios para atingir gestores e donos de empresas da região metropolitana de BH. Bom para construir reconhecimento da Planejart e gerar interesse antes da pesquisa. Custo por resultado geralmente menor que Google Ads.</p>
+    </div>
+  </div>
+
+  <span class="sublabel">📊 Estimativa de custo e retorno — Google Ads (cenário conservador para B2B)</span>
+  <table class="priority-table">
+    <thead>
+      <tr><th>Investimento mensal em mídia</th><th>Estimativa de cliques/mês</th><th>Contatos esperados</th><th>Potencial de retorno</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>R$ 500 / mês</strong></td>
+        <td>150–250 cliques</td>
+        <td>5–10 contatos</td>
+        <td>1 obra fechada já cobre o investimento</td>
+      </tr>
+      <tr>
+        <td><strong>R$ 1.000 / mês</strong></td>
+        <td>300–500 cliques</td>
+        <td>10–20 contatos</td>
+        <td>2–3 obras fechadas por mês</td>
+      </tr>
+      <tr>
+        <td><strong>R$ 1.500 / mês</strong></td>
+        <td>500–800 cliques</td>
+        <td>20–35 contatos</td>
+        <td>ROI alto para serviços de ticket médio elevado</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="win">
+    <strong>✅ Combinação ideal:</strong> SEO orgânico (resultado duradouro) + Google Ads (resultado imediato). O SEO reduz o custo de anúncios com o tempo — quanto mais o site ranqueia organicamente, menos é necessário investir em cliques pagos para manter o volume de contatos.
+  </div>
+
+  <div class="insight">
+    <strong>📌 Importante:</strong> A gestão de tráfego pago não está inclusa no plano de R$ 500/mês. Caso a Planejart queira ativar essa frente em paralelo ao SEO orgânico, pode ser orçada separadamente. O valor de mídia (anúncios) é pago diretamente ao Google ou Meta — não passa pela consultoria.
+  </div>
+
+  <hr class="divider">
+
+  <!-- ======== PROPOSTA 03 — INVESTIMENTO ======== -->
+  <div class="section-title">
+    <span class="section-num">03</span>
+    <h2>Investimento e Condições</h2>
+  </div>
+
+  <div class="card" style="border-top: 3px solid var(--rust); margin-bottom: 16px;">
+    <div class="card-title" style="font-size:20px;">💰 R$ 500,00 / mês</div>
+    <p>Valor fixo mensal, sem taxa de setup. Cobre todas as entregas descritas nas Fases 1 e 2, incluindo redesign do site, criação de páginas, otimização técnica, rastreamento de contatos, publicação semanal e relatórios mensais.</p>
+  </div>
+
+  <table class="priority-table">
+    <thead>
+      <tr><th>Condição</th><th>Detalhe</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Vigência mínima</strong></td>
+        <td>6 meses — SEO é um trabalho de médio prazo; resultados consistentes aparecem entre o 3º e o 6º mês</td>
+      </tr>
+      <tr>
+        <td><strong>Formas de pagamento</strong></td>
+        <td>
+          PIX ou transferência bancária — sem juros<br>
+          Cartão de crédito — com juros da operadora<br>
+          Vencimento todo dia ___ de cada mês
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Relatório de resultados</strong></td>
+        <td>Enviado até o dia 5 de cada mês referente ao mês anterior</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+</body>
+</html>
